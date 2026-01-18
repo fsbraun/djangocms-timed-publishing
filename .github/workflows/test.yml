@@ -30,6 +30,10 @@ jobs:
             requirements-file: 'dj60-cms50'
           - python-version: '3.11'
             requirements-file: 'dj60-cms50'
+          - python-version: '3.14'
+            requirements-file: 'dj42-cms41'
+          - python-version: '3.14'
+            requirements-file: 'dj42-cms50'
 
     name: Python ${{ matrix.python-version }} / ${{ matrix.requirements-file }}
 
