@@ -32,7 +32,7 @@ repos:
       - id: isort
 
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: v2.11.1
+    rev: v2.12.1
     hooks:
     - id: pyproject-fmt
 
@@ -45,7 +45,7 @@ repos:
         - tomli==2.0.1
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.10
+    rev: v0.14.14
     hooks:
     - id: ruff
       args: ["djangocms_timed_publishing", "--fix"]

@@ -33,6 +33,7 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Topic :: Internet :: WWW/HTTP",
   "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
   "Topic :: Software Development",
@@ -65,11 +66,11 @@ urls."Source" = "https://github.com/fsbraun/djangocms-timed-publishing"
 [tool.setuptools.dynamic]
 version = { attr = "djangocms_timed_publishing.__version__" }
 
-[tool.setuptools.packages.find]
-include = [ "djangocms_timed_publishing*" ]
-
 [tool.setuptools.package-data]
 "djangocms_timed_publishing" = [ "templates/**/*", "static/**/*", "locale/**/*" ]
+
+[tool.setuptools.packages.find]
+include = [ "djangocms_timed_publishing*" ]
 
 [tool.black]
 line-length = 119
@@ -118,6 +119,13 @@ testpaths = "tests"
 python_files = [ "test_*.py", "*_test.py", "tests.py" ]
 addopts = "--verbose --tb=short"
 
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "def __repr__",
+  "raise AssertionError",
+  "raise NotImplementedError",
+]
 [tool.coverage.run]
 source = [ "djangocms_timed_publishing" ]
 omit = [
@@ -125,12 +133,4 @@ omit = [
   "*/tests/*",
   "*/venv/*",
   "*/env/*",
-]
-
-[tool.coverage.report]
-exclude_lines = [
-  "pragma: no cover",
-  "def __repr__",
-  "raise AssertionError",
-  "raise NotImplementedError",
 ]
