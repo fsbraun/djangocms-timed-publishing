@@ -14,7 +14,7 @@ authors = [
 ]
 requires-python = ">=3.10"
 classifiers = [
-  "Development Status :: 5 - Production",
+  "Development Status :: 5 - Production/Stable",
   "Framework :: Django",
   "Framework :: Django :: 4.2",
   "Framework :: Django :: 5.0",
