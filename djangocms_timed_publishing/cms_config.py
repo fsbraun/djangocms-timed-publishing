@@ -2,12 +2,13 @@ from urllib.parse import unquote
 
 from django.contrib import admin
 from django.db import models
-from django.http import HttpResponseNotAllowed
+from django.http import HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from cms.app_base import CMSAppConfig
+from cms.constants import MODAL_HTML_REDIRECT
 from djangocms_versioning import constants
 from djangocms_versioning.admin import VersionAdmin
 from djangocms_versioning.cms_toolbars import VersioningToolbar
@@ -60,7 +61,11 @@ def patch_publish_view(original_view):
                     }
                 )
 
-        return original_view(self, request, object_id, *args, **kwargs)
+        response = original_view(self, request, object_id, *args, **kwargs)
+        if response.status_code in (301, 302, 303, 307, 308):  # Redirect?
+            # Need to close the modeal
+            return HttpResponse(MODAL_HTML_REDIRECT.format(url=response.url))
+        return response
     return patched_view
 
 
