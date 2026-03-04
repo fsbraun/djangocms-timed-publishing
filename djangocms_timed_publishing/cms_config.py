@@ -63,7 +63,7 @@ def patch_publish_view(original_view):
 
         response = original_view(self, request, object_id, *args, **kwargs)
         if response.status_code in (301, 302, 303, 307, 308):  # Redirect?
-            # Need to close the modeal
+            # Need to close the modal
             return HttpResponse(MODAL_HTML_REDIRECT.format(url=response.url))
         return response
     return patched_view
