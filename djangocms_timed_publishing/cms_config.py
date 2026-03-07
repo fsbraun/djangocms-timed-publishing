@@ -31,7 +31,7 @@ def patch_get_urls(get_urls):
         urls = get_urls(self)
         return [
             path(
-                r"<int:object_id>/timed/",
+                r"<path:object_id>/timed/",
                 self.admin_site.admin_view(self.timed_publish_view),
                 name="{}_{}_timed_publish".format(*info),
             ),
