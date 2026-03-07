@@ -84,7 +84,7 @@ class TimedPublicationsToolbar(CMSToolbar):
         version = version.convert_to_proxy()
         proxy_model = versionables.for_content(version.content).version_model_proxy
         url = reverse(
-                        f"admin:{proxy_model._meta.app_label}_{proxy_model.__name__.lower()}_publish",
+                        f"admin:{proxy_model._meta.app_label}_{proxy_model.__name__.lower()}_timed_publish",
                         args=(version.pk,)
                     )
         if self.request.user.has_perm(
