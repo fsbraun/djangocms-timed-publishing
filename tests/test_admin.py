@@ -68,6 +68,43 @@ class TestAdmin:
             f'<ul class="errorlist"><li>{expected_error}</li></ul>' in content  # Django 4.2
         )
 
+    def test_invalid_timed_publishing_form_rerendered_with_errors(self, client, admin_user, page_content, future_datetime):
+        """Test that invalid timed publishing form is rerendered with errors displayed."""
+        version = page_content.versions.first()
+        url = admin_reverse("djangocms_versioning_pagecontentversion_timed_publish", args=(version.pk,))
+        client.login(username=admin_user.username, password='admin123')
+
+        # Submit form with end date before start date (invalid - also in the past)
+        invalid_end_datetime = future_datetime - timedelta(days=1)
+        data = {
+            "visibility_start_0": future_datetime.date().isoformat(),
+            "visibility_start_1": future_datetime.strftime("%H:%M"),
+            "visibility_end_0": invalid_end_datetime.date().isoformat(),
+            "visibility_end_1": invalid_end_datetime.strftime("%H:%M"),
+        }
+        response = client.post(url, data=data)
+        content = response.content.decode()
+
+        # Should not redirect (status 200, not 302)
+        assert response.status_code == 200
+
+        # Form should be rerendered
+        assert "<form" in content
+        assert "<b>Visible after</b>" in content
+        assert "<b>Visible until</b>" in content
+
+        # Error message should be displayed (validates future first, then order)
+        assert '<ul class="errorlist"' in content
+        assert "Please correct the errors below" in content
+        expected_error = "The date and time must be in the future."
+        assert expected_error in content
+
+        # Version should remain in DRAFT state
+        assert page_content.versions.first().state == DRAFT
+
+        # No visibility should be created
+        assert not hasattr(page_content.versions.first(), "visibility") or not TimedPublishingInterval.objects.filter(version=version).exists()
+
     def test_publish_does_publish_without_form_data(self, client, admin_user, page_content):
         version = page_content.versions.first()
         url = admin_reverse("djangocms_versioning_pagecontentversion_publish", args=(version.pk,))
