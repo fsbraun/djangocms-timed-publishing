@@ -89,7 +89,7 @@ class TestToolbar:
             version = version.convert_to_proxy()
 
             url = admin_reverse(
-                f"{version._meta.app_label}_{version._meta.model_name}_publish",
+                f"{version._meta.app_label}_{version._meta.model_name}_timed_publish",
                 args=(page_content.pk,)
             )
             timed_button = (

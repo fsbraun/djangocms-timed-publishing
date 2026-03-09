@@ -12,7 +12,7 @@ from djangocms_timed_publishing.models import TimedPublishingInterval
 class TestAdmin:
     def test_publish_raises_error_if_not_get_or_post(self, client, admin_user, page_content):
         version = page_content.versions.first()
-        url = admin_reverse("djangocms_versioning_pagecontentversion_publish", args=(version.pk,))
+        url = admin_reverse("djangocms_versioning_pagecontentversion_timed_publish", args=(version.pk,))
         client.login(username=admin_user.username, password='admin123')
         response = client.put(url)
         content = response.content.decode()
@@ -22,7 +22,7 @@ class TestAdmin:
 
     def test_publish_renders_form_on_get(self, client, admin_user, page_content):
         version = page_content.versions.first()
-        url = admin_reverse("djangocms_versioning_pagecontentversion_publish", args=(version.pk,))
+        url = admin_reverse("djangocms_versioning_pagecontentversion_timed_publish", args=(version.pk,))
         client.login(username=admin_user.username, password='admin123')
         response = client.get(url)
         content = response.content.decode()
@@ -35,7 +35,7 @@ class TestAdmin:
 
     def test_publish_renders_form_errors(self, client, admin_user, page_content):
         version = page_content.versions.first()
-        url = admin_reverse("djangocms_versioning_pagecontentversion_publish", args=(version.pk,))
+        url = admin_reverse("djangocms_versioning_pagecontentversion_timed_publish", args=(version.pk,))
         client.login(username=admin_user.username, password='admin123')
         response = client.post(url, data={
             "visibility_start_1": "this is not a date"
@@ -51,7 +51,7 @@ class TestAdmin:
     def test_publish_must_affect_future(self, client, admin_user, page_content, past_datetime):
 
         version = page_content.versions.first()
-        url = admin_reverse("djangocms_versioning_pagecontentversion_publish", args=(version.pk,))
+        url = admin_reverse("djangocms_versioning_pagecontentversion_timed_publish", args=(version.pk,))
         client.login(username=admin_user.username, password='admin123')
         data = {
             "visibility_start_0": past_datetime.date().isoformat(),
@@ -78,7 +78,7 @@ class TestAdmin:
 
     def test_publish_does_respect_form_data(self, client, admin_user, page_content, future_datetime, far_future_datetime):
         version = page_content.versions.first()
-        url = admin_reverse("djangocms_versioning_pagecontentversion_publish", args=(version.pk,))
+        url = admin_reverse("djangocms_versioning_pagecontentversion_timed_publish", args=(version.pk,))
         client.login(username=admin_user.username, password='admin123')
         data = {
             "visibility_start_0": future_datetime.date().isoformat(),
@@ -94,7 +94,7 @@ class TestAdmin:
 
     def test_publish_gracefully_handles_id_mismatch(self, client, admin_user, page_content, future_datetime, far_future_datetime):
         version = page_content.versions.first()
-        url = admin_reverse("djangocms_versioning_pagecontentversion_publish", args=(-version.pk,))
+        url = admin_reverse("djangocms_versioning_pagecontentversion_timed_publish", args=(-version.pk,))
         client.login(username=admin_user.username, password='admin123')
         data = {
             "visibility_start_0": future_datetime.date().isoformat(),

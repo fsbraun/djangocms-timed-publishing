@@ -111,10 +111,11 @@ class TimedPublicationsToolbar(CMSToolbar):
         for button_list in self.toolbar.get_right_items():
             if isinstance(button_list, ButtonList):
                 for i, button in enumerate(button_list.buttons):
-                    if button.url == url:
+                    # Find the publish button by checking if it ends with /publish/
+                    if hasattr(button, 'url') and button.url and '/publish/' in button.url:
                         button_list.buttons[i] = ModalButton(
                             button.name,
-                            url=button.url,
+                            url=url,
                             on_close="REFRESH_PAGE",
                             disabled=button.disabled,
                             extra_classes=["cms-btn-action"],
