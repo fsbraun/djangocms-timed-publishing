@@ -2,12 +2,14 @@ from urllib.parse import unquote
 
 from django.contrib import admin
 from django.db import models
-from django.http import HttpResponseNotAllowed
+from django.http import HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render
+from django.urls import path
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from cms.app_base import CMSAppConfig
+from cms.constants import MODAL_HTML_REDIRECT
 from djangocms_versioning import constants
 from djangocms_versioning.admin import VersionAdmin
 from djangocms_versioning.cms_toolbars import VersioningToolbar
@@ -20,6 +22,21 @@ from .models import TimedPublishingInterval
 
 PENDING = _("Pending")
 EXPIRED = _("Expired")
+
+
+def patch_get_urls(get_urls):
+    """Patch VersionAdmin.get_urls to prepend a timed publishing URL pattern."""
+    def patched_get_urls(self):
+        info = self.model._meta.app_label, self.model._meta.model_name
+        urls = get_urls(self)
+        return [
+            path(
+                r"<path:object_id>/timed/",
+                self.admin_site.admin_view(self.timed_publish_view),
+                name="{}_{}_timed_publish".format(*info),
+            ),
+        ] + urls
+    return patched_get_urls
 
 
 def patch_publish_view(original_view):
@@ -60,7 +77,11 @@ def patch_publish_view(original_view):
                     }
                 )
 
-        return original_view(self, request, object_id, *args, **kwargs)
+        response = original_view(self, request, object_id, *args, **kwargs)
+        if response.status_code in (301, 302, 303, 307, 308):  # Redirect?
+            # Need to close the modal
+            return HttpResponse(MODAL_HTML_REDIRECT.format(url=response.url))
+        return response
     return patched_view
 
 
@@ -111,7 +132,8 @@ def get_state(self: admin.ModelAdmin, obj: Version) -> str:
 
 
 class TimedPublishingConfig(CMSAppConfig):
-    VersionAdmin.publish_view = patch_publish_view(VersionAdmin.publish_view)
+    VersionAdmin.get_urls = patch_get_urls(VersionAdmin.get_urls)
+    VersionAdmin.timed_publish_view = patch_publish_view(VersionAdmin.publish_view)
     VersionAdmin.get_state = get_state
     VersionAdmin.list_display = ["get_state" if item == "state" else item for item in VersionAdmin.list_display]
     Version.short_name = patch_short_name

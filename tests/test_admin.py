@@ -12,7 +12,7 @@ from djangocms_timed_publishing.models import TimedPublishingInterval
 class TestAdmin:
     def test_publish_raises_error_if_not_get_or_post(self, client, admin_user, page_content):
         version = page_content.versions.first()
-        url = admin_reverse("djangocms_versioning_pagecontentversion_publish", args=(version.pk,))
+        url = admin_reverse("djangocms_versioning_pagecontentversion_timed_publish", args=(version.pk,))
         client.login(username=admin_user.username, password='admin123')
         response = client.put(url)
         content = response.content.decode()
@@ -22,7 +22,7 @@ class TestAdmin:
 
     def test_publish_renders_form_on_get(self, client, admin_user, page_content):
         version = page_content.versions.first()
-        url = admin_reverse("djangocms_versioning_pagecontentversion_publish", args=(version.pk,))
+        url = admin_reverse("djangocms_versioning_pagecontentversion_timed_publish", args=(version.pk,))
         client.login(username=admin_user.username, password='admin123')
         response = client.get(url)
         content = response.content.decode()
@@ -35,7 +35,7 @@ class TestAdmin:
 
     def test_publish_renders_form_errors(self, client, admin_user, page_content):
         version = page_content.versions.first()
-        url = admin_reverse("djangocms_versioning_pagecontentversion_publish", args=(version.pk,))
+        url = admin_reverse("djangocms_versioning_pagecontentversion_timed_publish", args=(version.pk,))
         client.login(username=admin_user.username, password='admin123')
         response = client.post(url, data={
             "visibility_start_1": "this is not a date"
@@ -51,7 +51,7 @@ class TestAdmin:
     def test_publish_must_affect_future(self, client, admin_user, page_content, past_datetime):
 
         version = page_content.versions.first()
-        url = admin_reverse("djangocms_versioning_pagecontentversion_publish", args=(version.pk,))
+        url = admin_reverse("djangocms_versioning_pagecontentversion_timed_publish", args=(version.pk,))
         client.login(username=admin_user.username, password='admin123')
         data = {
             "visibility_start_0": past_datetime.date().isoformat(),
@@ -68,6 +68,43 @@ class TestAdmin:
             f'<ul class="errorlist"><li>{expected_error}</li></ul>' in content  # Django 4.2
         )
 
+    def test_invalid_timed_publishing_form_rerendered_with_errors(self, client, admin_user, page_content, future_datetime):
+        """Test that invalid timed publishing form is rerendered with errors displayed."""
+        version = page_content.versions.first()
+        url = admin_reverse("djangocms_versioning_pagecontentversion_timed_publish", args=(version.pk,))
+        client.login(username=admin_user.username, password='admin123')
+
+        # Submit form with end date before start date (invalid - also in the past)
+        invalid_end_datetime = future_datetime - timedelta(days=1)
+        data = {
+            "visibility_start_0": future_datetime.date().isoformat(),
+            "visibility_start_1": future_datetime.strftime("%H:%M"),
+            "visibility_end_0": invalid_end_datetime.date().isoformat(),
+            "visibility_end_1": invalid_end_datetime.strftime("%H:%M"),
+        }
+        response = client.post(url, data=data)
+        content = response.content.decode()
+
+        # Should not redirect (status 200, not 302)
+        assert response.status_code == 200
+
+        # Form should be rerendered
+        assert "<form" in content
+        assert "<b>Visible after</b>" in content
+        assert "<b>Visible until</b>" in content
+
+        # Error message should be displayed (validates future first, then order)
+        assert '<ul class="errorlist"' in content
+        assert "Please correct the errors below" in content
+        expected_error = "The date and time must be in the future."
+        assert expected_error in content
+
+        # Version should remain in DRAFT state
+        assert page_content.versions.first().state == DRAFT
+
+        # No visibility should be created
+        assert not hasattr(page_content.versions.first(), "visibility") or not TimedPublishingInterval.objects.filter(version=version).exists()
+
     def test_publish_does_publish_without_form_data(self, client, admin_user, page_content):
         version = page_content.versions.first()
         url = admin_reverse("djangocms_versioning_pagecontentversion_publish", args=(version.pk,))
@@ -78,7 +115,7 @@ class TestAdmin:
 
     def test_publish_does_respect_form_data(self, client, admin_user, page_content, future_datetime, far_future_datetime):
         version = page_content.versions.first()
-        url = admin_reverse("djangocms_versioning_pagecontentversion_publish", args=(version.pk,))
+        url = admin_reverse("djangocms_versioning_pagecontentversion_timed_publish", args=(version.pk,))
         client.login(username=admin_user.username, password='admin123')
         data = {
             "visibility_start_0": future_datetime.date().isoformat(),
@@ -94,7 +131,7 @@ class TestAdmin:
 
     def test_publish_gracefully_handles_id_mismatch(self, client, admin_user, page_content, future_datetime, far_future_datetime):
         version = page_content.versions.first()
-        url = admin_reverse("djangocms_versioning_pagecontentversion_publish", args=(-version.pk,))
+        url = admin_reverse("djangocms_versioning_pagecontentversion_timed_publish", args=(-version.pk,))
         client.login(username=admin_user.username, password='admin123')
         data = {
             "visibility_start_0": future_datetime.date().isoformat(),

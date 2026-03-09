@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.1] - 2026-03-07
+
+- fix: Modal did not close
+- fix: Modal gets own endpoint to stay compatible with versioning's buttons
+
+## [1.0.0] - 2026-02-10
+
+- feat: add fr translation by @corentinbettiol in #14
+
 ## [0.2.0] - 2025-08-06
 
 - Configuration option `DJANGOCMS_TIMED_PUBLISHING_BUTTON` to always show time selection modal or use menu-based approach

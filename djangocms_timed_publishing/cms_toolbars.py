@@ -84,7 +84,7 @@ class TimedPublicationsToolbar(CMSToolbar):
         version = version.convert_to_proxy()
         proxy_model = versionables.for_content(version.content).version_model_proxy
         url = reverse(
-                        f"admin:{proxy_model._meta.app_label}_{proxy_model.__name__.lower()}_publish",
+                        f"admin:{proxy_model._meta.app_label}_{proxy_model.__name__.lower()}_timed_publish",
                         args=(version.pk,)
                     )
         if self.request.user.has_perm(
@@ -111,10 +111,11 @@ class TimedPublicationsToolbar(CMSToolbar):
         for button_list in self.toolbar.get_right_items():
             if isinstance(button_list, ButtonList):
                 for i, button in enumerate(button_list.buttons):
-                    if button.url == url:
+                    # Find the publish button by checking if it ends with /publish/
+                    if hasattr(button, 'url') and button.url and '/publish/' in button.url:
                         button_list.buttons[i] = ModalButton(
                             button.name,
-                            url=button.url,
+                            url=url,
                             on_close="REFRESH_PAGE",
                             disabled=button.disabled,
                             extra_classes=["cms-btn-action"],
