@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-31 09:48+0200\n"
+"POT-Creation-Date: 2026-03-15 22:35+0100\n"
 "PO-Revision-Date: 2026-02-10\n"
 "Last-Translator: \n"
 "Language-Team: Simplified Chinese\n"
@@ -16,38 +16,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: cms_config.py:38
-msgid "This view only supports GET or POST method."
-msgstr "此视图仅支持 GET 或 POST 方法。"
-
-#: cms_config.py:68
+#: cms_config.py:23
 msgid "Pending"
 msgstr "待处理"
 
-#: cms_config.py:70
+#: cms_config.py:24
 msgid "Expired"
 msgstr "已过期"
 
-#: cms_config.py:71
+#: cms_config.py:51
+msgid "This view only supports GET or POST method."
+msgstr "此视图仅支持 GET 或 POST 方法。"
+
+#: cms_config.py:95
 #, python-brace-format
 msgid "Version #{number} ({state})"
 msgstr "版本 #{number} ({state})"
 
-#: cms_toolbars.py:63
+#: cms_config.py:119
+msgid "State"
+msgstr "状态"
+
+#: cms_toolbars.py:64
 #, python-format
 msgid "Visible until %(datetime)s (%(tz)s)"
 msgstr "在 %(datetime)s (%(tz)s) 之前可见"
 
-#: cms_toolbars.py:70
+#: cms_toolbars.py:71
 #, python-format
 msgid "Visible since %(datetime)s (%(tz)s)"
 msgstr "自 %(datetime)s (%(tz)s) 以来可见"
 
-#: cms_toolbars.py:72
+#: cms_toolbars.py:73
+#, python-format
 msgid "Visible after %(datetime)s (%(tz)s)"
 msgstr "在 %(datetime)s (%(tz)s) 之后可见"
 
-#: cms_toolbars.py:92
+#: cms_toolbars.py:100
 #: templates/djangocms_versioning/admin/timed_publishing.html:14
 msgid "Publish with time limits"
 msgstr "发布时间限制"
@@ -76,8 +81,7 @@ msgstr "日期和时间必须是未来。"
 msgid ""
 "The time until the content is visible must be after the time the content "
 "becomes visible."
-msgstr ""
-"内容可见的时间必须在内容变得可见的时间之后。"
+msgstr "内容可见的时间必须在内容变得可见的时间之后。"
 
 #: models.py:16
 msgid "visible after"

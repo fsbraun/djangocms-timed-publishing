@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-31 09:48+0200\n"
+"POT-Creation-Date: 2026-03-15 22:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,39 +18,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: cms_config.py:38
-msgid "This view only supports GET or POST method."
-msgstr "Diese Ansicht unterstützt nur die GET oder POST-Methode."
-
-#: cms_config.py:68
+#: cms_config.py:23
 msgid "Pending"
 msgstr "Ausstehend"
 
-#: cms_config.py:70
+#: cms_config.py:24
 msgid "Expired"
 msgstr "Abgelaufen"
 
-#: cms_config.py:71
+#: cms_config.py:51
+msgid "This view only supports GET or POST method."
+msgstr "Diese Ansicht unterstützt nur die GET oder POST-Methode."
+
+#: cms_config.py:95
 #, python-brace-format
 msgid "Version #{number} ({state})"
 msgstr "Version #{number} ({state})"
 
-#: cms_toolbars.py:63
+#: cms_config.py:119
+msgid "State"
+msgstr "Status"
+
+#: cms_toolbars.py:64
 #, python-format
 msgid "Visible until %(datetime)s (%(tz)s)"
 msgstr "Sichtbar bis %(datetime)s (%(tz)s)"
 
-#: cms_toolbars.py:70
+#: cms_toolbars.py:71
 #, python-format
 msgid "Visible since %(datetime)s (%(tz)s)"
 msgstr "Sichtbar seit %(datetime)s (%(tz)s)"
 
-#: cms_toolbars.py:72
+#: cms_toolbars.py:73
 #, python-format
 msgid "Visible after %(datetime)s (%(tz)s)"
 msgstr "Sichtbar ab %(datetime)s (%(tz)s)"
 
-#: cms_toolbars.py:92
+#: cms_toolbars.py:100
 #: templates/djangocms_versioning/admin/timed_publishing.html:14
 msgid "Publish with time limits"
 msgstr "Zeitbegrenzt veröffentlichen"
@@ -79,7 +83,9 @@ msgstr "Das Datum und die Uhrzeit müssen in der Zukunft liegen."
 msgid ""
 "The time until the content is visible must be after the time the content "
 "becomes visible."
-msgstr "Die Zeit, bis der Inhalt sichtbar ist, muss nach dem Zeitpunkt liegen, an dem der Inhalt sichtbar wird."
+msgstr ""
+"Die Zeit, bis der Inhalt sichtbar ist, muss nach dem Zeitpunkt liegen, an "
+"dem der Inhalt sichtbar wird."
 
 #: models.py:16
 msgid "visible after"
@@ -100,9 +106,11 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"        <p>Sie können mit optionalen Daten und Uhrzeiten in der Zukunft veröffentlichen, zu denen der Inhalt sichtbar wird\n"
+"        <p>Sie können mit optionalen Daten und Uhrzeiten in der Zukunft "
+"veröffentlichen, zu denen der Inhalt sichtbar wird\n"
 "            und/oder nicht mehr für Besucher der Seite sichtbar ist.</p>\n"
-"        <p>Nach der Veröffentlichung können die Inhalte oder Zeiten nicht mehr geändert werden.</p>\n"
+"        <p>Nach der Veröffentlichung können die Inhalte oder Zeiten nicht "
+"mehr geändert werden.</p>\n"
 "    "
 
 #: templates/djangocms_versioning/admin/timed_publishing.html:24

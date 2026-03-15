@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-31 09:48+0200\n"
+"POT-Creation-Date: 2026-03-15 22:35+0100\n"
 "PO-Revision-Date: 2026-02-10\n"
 "Last-Translator: \n"
 "Language-Team: Dutch\n"
@@ -16,38 +16,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: cms_config.py:38
-msgid "This view only supports GET or POST method."
-msgstr "Deze weergave ondersteunt alleen GET of POST methode."
-
-#: cms_config.py:68
+#: cms_config.py:23
 msgid "Pending"
 msgstr "In behandeling"
 
-#: cms_config.py:70
+#: cms_config.py:24
 msgid "Expired"
 msgstr "Verlopen"
 
-#: cms_config.py:71
+#: cms_config.py:51
+msgid "This view only supports GET or POST method."
+msgstr "Deze weergave ondersteunt alleen GET of POST methode."
+
+#: cms_config.py:95
 #, python-brace-format
 msgid "Version #{number} ({state})"
 msgstr "Versie #{number} ({state})"
 
-#: cms_toolbars.py:63
+#: cms_config.py:119
+msgid "State"
+msgstr "Status"
+
+#: cms_toolbars.py:64
 #, python-format
 msgid "Visible until %(datetime)s (%(tz)s)"
 msgstr "Zichtbaar tot %(datetime)s (%(tz)s)"
 
-#: cms_toolbars.py:70
+#: cms_toolbars.py:71
 #, python-format
 msgid "Visible since %(datetime)s (%(tz)s)"
 msgstr "Zichtbaar sinds %(datetime)s (%(tz)s)"
 
-#: cms_toolbars.py:72
+#: cms_toolbars.py:73
+#, python-format
 msgid "Visible after %(datetime)s (%(tz)s)"
 msgstr "Zichtbaar na %(datetime)s (%(tz)s)"
 
-#: cms_toolbars.py:92
+#: cms_toolbars.py:100
 #: templates/djangocms_versioning/admin/timed_publishing.html:14
 msgid "Publish with time limits"
 msgstr "Publiceren met tijdslimiet"
@@ -99,10 +104,11 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"        <p>U kunt publiceren met optionele datums en tijden in de toekomst wanneer "
-"de inhoud zichtbaar wordt\n"
+"        <p>U kunt publiceren met optionele datums en tijden in de toekomst "
+"wanneer de inhoud zichtbaar wordt\n"
 "            en/of niet meer zichtbaar is voor bezoekers van de site.</p>\n"
-"        <p>Zodra gepubliceerd kunnen de inhoud of tijden niet meer worden gewijzigd.</p>\n"
+"        <p>Zodra gepubliceerd kunnen de inhoud of tijden niet meer worden "
+"gewijzigd.</p>\n"
 "    "
 
 #: templates/djangocms_versioning/admin/timed_publishing.html:24
