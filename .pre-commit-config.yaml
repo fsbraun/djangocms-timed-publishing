@@ -15,7 +15,7 @@ repos:
         args: ["--py38-plus"]
 
   - repo: https://github.com/adamchainz/django-upgrade
-    rev: '1.29.1'
+    rev: '1.32.0'
     hooks:
       - id: django-upgrade
         args: [--target-version, "4.2"]
@@ -27,17 +27,17 @@ repos:
       - id: mixed-line-ending
 
   - repo: https://github.com/pycqa/isort
-    rev: 7.0.0
+    rev: 9.0.1
     hooks:
       - id: isort
 
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: v2.12.1
+    rev: v2.29.3
     hooks:
     - id: pyproject-fmt
 
   - repo: https://github.com/rstcheck/rstcheck
-    rev: v6.2.5
+    rev: v6.3.0
     hooks:
     - id: rstcheck
       additional_dependencies:
@@ -45,7 +45,7 @@ repos:
         - tomli==2.0.1
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.14
+    rev: v0.16.6
     hooks:
     - id: ruff
       args: ["djangocms_timed_publishing", "--fix"]
